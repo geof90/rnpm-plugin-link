@@ -1,10 +1,10 @@
 const addPackagePatch = require('./addPackagePatch');
 
 const append = (scope, pattern, patch) =>
-  scope.replace(pattern, `${pattern}${patch}`);
+  scope.replace(pattern, `${patch}${pattern}`);
 
 module.exports = function makeMainActivityPatch(config) {
-  const importPattern = 'import com.facebook.react.ReactActivity;';
+  const classPattern = 'public class MainActivity extends';
   const packagePattern = 'new MainReactPackage()';
 
   /**
@@ -17,7 +17,7 @@ module.exports = function makeMainActivityPatch(config) {
     const patched = append(
       content,
       importPattern,
-      '\n' + config.packageImportPath
+      config.packageImportPath + '\n'
     );
 
     return append(
